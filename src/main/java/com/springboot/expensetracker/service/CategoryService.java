@@ -32,7 +32,7 @@ public class CategoryService {
 
     public CategoryDto getCategory(Long id){
         Category category = categoryRepository.findById(id).orElseThrow(() ->
-                new CategoryNotFoundException("Category was not found!"));
+                new CategoryNotFoundException("Category with id " + id + " was not found!"));
         return categoryMapper.toDto(category);
     }
 
@@ -41,5 +41,17 @@ public class CategoryService {
                 .stream()
                 .map(categoryMapper::toDto)
                 .toList();
+    }
+
+    public CategoryDto updateCategory(Long id, CategoryDto categoryDto){
+        Category category = categoryRepository.findById(id).orElseThrow(() ->
+                new CategoryNotFoundException("Category with id " + id + " was not found!")
+        );
+        if (categoryRepository.existsByName(categoryDto.name())){
+            throw new DuplicateCategoryNameException("Category with this name already exists!");
+        }
+        category.setName(categoryDto.name());
+        Category savedCategory = categoryRepository.save(category);
+        return categoryMapper.toDto(savedCategory);
     }
 }
