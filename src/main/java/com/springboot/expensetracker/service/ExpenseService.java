@@ -3,6 +3,7 @@ package com.springboot.expensetracker.service;
 import com.springboot.expensetracker.dto.ExpenseDto;
 import com.springboot.expensetracker.entity.Category;
 import com.springboot.expensetracker.entity.Expense;
+import com.springboot.expensetracker.exception.ExpenseNotFoundException;
 import com.springboot.expensetracker.mapper.ExpenseMapper;
 import com.springboot.expensetracker.repository.CategoryRepository;
 import com.springboot.expensetracker.repository.ExpenseRepository;
@@ -33,5 +34,11 @@ public class ExpenseService {
         }
         Expense savedExpense = expenseRepository.save(expense);
         return expenseMapper.toDto(savedExpense);
+    }
+
+    public ExpenseDto getExpense(Long id){
+        Expense expense = expenseRepository.findById(id).orElseThrow(() ->
+                new ExpenseNotFoundException("Expense with id " + id + " was not found!"));
+        return expenseMapper.toDto(expense);
     }
 }
