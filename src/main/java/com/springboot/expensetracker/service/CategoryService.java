@@ -2,8 +2,8 @@ package com.springboot.expensetracker.service;
 
 import com.springboot.expensetracker.dto.CategoryDto;
 import com.springboot.expensetracker.entity.Category;
-import com.springboot.expensetracker.exception.CategoryNotFoundException;
 import com.springboot.expensetracker.exception.DuplicateCategoryNameException;
+import com.springboot.expensetracker.exception.ResourceNotFoundException;
 import com.springboot.expensetracker.mapper.CategoryMapper;
 import com.springboot.expensetracker.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class CategoryService {
 
     public CategoryDto getCategory(Long id){
         Category category = categoryRepository.findById(id).orElseThrow(() ->
-                new CategoryNotFoundException("Category with id " + id + " was not found!"));
+                new ResourceNotFoundException("Category with id " + id + " was not found!"));
         return categoryMapper.toDto(category);
     }
 
@@ -45,7 +45,7 @@ public class CategoryService {
 
     public CategoryDto updateCategory(Long id, CategoryDto categoryDto){
         Category category = categoryRepository.findById(id).orElseThrow(() ->
-                new CategoryNotFoundException("Category with id " + id + " was not found!")
+                new ResourceNotFoundException("Category with id " + id + " was not found!")
         );
         if (categoryRepository.existsByName(categoryDto.name())){
             throw new DuplicateCategoryNameException("Category with this name already exists!");

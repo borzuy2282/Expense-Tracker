@@ -1,13 +1,10 @@
 package com.springboot.expensetracker.controller;
 
 import com.springboot.expensetracker.dto.ExpenseDto;
-import com.springboot.expensetracker.exception.ErrorDetails;
-import com.springboot.expensetracker.exception.ExpenseNotFoundException;
 import com.springboot.expensetracker.service.ExpenseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,20 +51,5 @@ public class ExpenseController {
     public ResponseEntity<?> deleteExpense(@PathVariable Long id){
         expenseService.deleteExpense(id);
         return ResponseEntity.noContent().build();
-    }
-
-
-    @ExceptionHandler(ExpenseNotFoundException.class)
-    public ResponseEntity<ErrorDetails> expenseNotFoundExceptionHandler(ExpenseNotFoundException ex,
-                                                                        WebRequest webRequest){
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                ex.getMessage(),
-                webRequest.getDescription(false),
-                "EXPENSE_NOT_FOUND"
-        );
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(errorDetails);
     }
 }

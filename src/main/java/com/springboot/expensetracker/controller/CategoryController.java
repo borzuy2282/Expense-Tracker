@@ -1,7 +1,6 @@
 package com.springboot.expensetracker.controller;
 
 import com.springboot.expensetracker.dto.CategoryDto;
-import com.springboot.expensetracker.exception.CategoryNotFoundException;
 import com.springboot.expensetracker.exception.DuplicateCategoryNameException;
 import com.springboot.expensetracker.exception.ErrorDetails;
 import com.springboot.expensetracker.service.CategoryService;
@@ -69,20 +68,6 @@ public class CategoryController {
         );
         return ResponseEntity
                 .badRequest()
-                .body(errorDetails);
-    }
-
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ErrorDetails> categoryNotFoundExceptionHandler(CategoryNotFoundException ex,
-                                                                              WebRequest webRequest){
-        ErrorDetails errorDetails = new ErrorDetails(
-                LocalDateTime.now(),
-                ex.getMessage(),
-                webRequest.getDescription(false),
-                "CATEGORY_NOT_FOUND"
-        );
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
                 .body(errorDetails);
     }
 }
