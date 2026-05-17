@@ -1,12 +1,15 @@
 package com.springboot.expensetracker.controller;
 
 import com.springboot.expensetracker.dto.CategoryDto;
+import com.springboot.expensetracker.exception.CategoryNotFoundException;
 import com.springboot.expensetracker.exception.DuplicateCategoryNameException;
 import com.springboot.expensetracker.exception.ErrorDetails;
 import com.springboot.expensetracker.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +33,11 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(categoryDto));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<CategoryDto> getCategory(@PathVariable Long id){
+        return ResponseEntity.ok(categoryService.getCategory(id));
+    }
+
 
     @ExceptionHandler(DuplicateCategoryNameException.class)
     public ResponseEntity<ErrorDetails> duplicateCategoryNameExceptionHandler(DuplicateCategoryNameException ex,
@@ -42,6 +50,20 @@ public class CategoryController {
         );
         return ResponseEntity
                 .badRequest()
+                .body(errorDetails);
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ErrorDetails> categoryNotFoundExceptionHandler(CategoryNotFoundException ex,
+                                                                              WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                webRequest.getDescription(false),
+                "CATEGORY_NOT_FOUND"
+        );
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(errorDetails);
     }
 }
