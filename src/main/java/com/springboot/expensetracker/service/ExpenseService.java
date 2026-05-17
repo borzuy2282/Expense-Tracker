@@ -50,4 +50,23 @@ public class ExpenseService {
                 .map(expenseMapper::toDto)
                 .toList();
     }
+
+    public ExpenseDto updateExpense(Long id, ExpenseDto expenseDto){
+        Expense expense = expenseRepository.findById(id).orElseThrow(() ->
+                new ExpenseNotFoundException("Expense with id " + id + " was not found!"));
+        if (expenseDto.amount() != null) expense.setAmount(expenseDto.amount());
+        if (expenseDto.category() != null) {
+            Category category = categoryRepository.findByName(expenseDto.category().name()).orElse(null);
+            if (category == null) {
+                category = new Category();
+                category.setName(expenseDto.category().name());
+                Category updatedCategory = categoryRepository.save(category);
+                expense.setCategory(updatedCategory);
+            } else {
+                expense.setCategory(category);
+            }
+        }
+        Expense updatedExpense = expenseRepository.save(expense);
+        return expenseMapper.toDto(updatedExpense);
+    }
 }
