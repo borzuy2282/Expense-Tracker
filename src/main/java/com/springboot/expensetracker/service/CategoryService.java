@@ -8,6 +8,8 @@ import com.springboot.expensetracker.mapper.CategoryMapper;
 import com.springboot.expensetracker.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
 
@@ -32,5 +34,12 @@ public class CategoryService {
         Category category = categoryRepository.findById(id).orElseThrow(() ->
                 new CategoryNotFoundException("Category was not found!"));
         return categoryMapper.toDto(category);
+    }
+
+    public List<CategoryDto> getAllCategories(){
+        return categoryRepository.findAll()
+                .stream()
+                .map(categoryMapper::toDto)
+                .toList();
     }
 }

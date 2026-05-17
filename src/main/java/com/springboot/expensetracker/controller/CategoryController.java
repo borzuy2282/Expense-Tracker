@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/category")
@@ -36,6 +37,11 @@ public class CategoryController {
     @GetMapping("{id}")
     public ResponseEntity<CategoryDto> getCategory(@PathVariable Long id){
         return ResponseEntity.ok(categoryService.getCategory(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryDto>> getAllCategories(){
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
 
