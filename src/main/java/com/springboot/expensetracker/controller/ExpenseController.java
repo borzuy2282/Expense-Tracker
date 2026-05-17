@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/expense")
@@ -35,6 +36,11 @@ public class ExpenseController {
     @GetMapping("{id}")
     public ResponseEntity<ExpenseDto> getExpense(@PathVariable Long id){
         return ResponseEntity.ok(expenseService.getExpense(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ExpenseDto>> getAllExpenses(){
+        return ResponseEntity.ok(expenseService.getAllExpenses());
     }
 
 

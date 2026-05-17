@@ -9,6 +9,8 @@ import com.springboot.expensetracker.repository.CategoryRepository;
 import com.springboot.expensetracker.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExpenseService {
     private final ExpenseMapper expenseMapper;
@@ -40,5 +42,12 @@ public class ExpenseService {
         Expense expense = expenseRepository.findById(id).orElseThrow(() ->
                 new ExpenseNotFoundException("Expense with id " + id + " was not found!"));
         return expenseMapper.toDto(expense);
+    }
+
+    public List<ExpenseDto> getAllExpenses(){
+        return expenseRepository.findAll()
+                .stream()
+                .map(expenseMapper::toDto)
+                .toList();
     }
 }
