@@ -54,4 +54,8 @@ public class CategoryService {
         Category savedCategory = categoryRepository.save(category);
         return categoryMapper.toDto(savedCategory);
     }
+
+    public void deleteCategory(Long id){
+        categoryRepository.deleteById(id);
+    }
 }
