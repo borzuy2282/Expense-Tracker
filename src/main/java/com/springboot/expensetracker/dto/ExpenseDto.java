@@ -7,6 +7,6 @@ public record ExpenseDto (
         Long id,
         BigDecimal amount,
         LocalDateTime createdAt,
-        CategoryDto categoryDto
+        CategoryDto category
 ){
 }

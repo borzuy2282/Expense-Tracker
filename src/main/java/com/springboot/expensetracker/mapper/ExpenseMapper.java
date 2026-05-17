@@ -7,8 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ExpenseMapper {
-    @Mapping(source = "category", target = "categoryDto")
     ExpenseDto toDto(Expense expense);
-    @Mapping(source = "categoryDto", target = "category")
     Expense toEntity(ExpenseDto expenseDto);
 }
