@@ -6,6 +6,7 @@ import com.springboot.expensetracker.exception.ExpenseNotFoundException;
 import com.springboot.expensetracker.service.ExpenseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,12 @@ public class ExpenseController {
     public ResponseEntity<ExpenseDto> updateExpense(@PathVariable Long id,
                                                     @RequestBody ExpenseDto expenseDto){
         return ResponseEntity.ok(expenseService.updateExpense(id, expenseDto));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteExpense(@PathVariable Long id){
+        expenseService.deleteExpense(id);
+        return ResponseEntity.noContent().build();
     }
 
 

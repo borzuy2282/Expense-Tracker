@@ -69,4 +69,8 @@ public class ExpenseService {
         Expense updatedExpense = expenseRepository.save(expense);
         return expenseMapper.toDto(updatedExpense);
     }
+
+    public void deleteExpense(Long id){
+        expenseRepository.deleteById(id);
+    }
 }
