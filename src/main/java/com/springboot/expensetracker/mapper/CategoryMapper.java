@@ -1,6 +1,6 @@
 package com.springboot.expensetracker.mapper;
 
-import com.springboot.expensetracker.CategoryDto;
+import com.springboot.expensetracker.dto.CategoryDto;
 import com.springboot.expensetracker.entity.Category;
 import org.mapstruct.Mapper;
 

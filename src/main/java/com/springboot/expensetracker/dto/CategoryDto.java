@@ -1,4 +1,4 @@
-package com.springboot.expensetracker;
+package com.springboot.expensetracker.dto;
 
 
 public record CategoryDto(
